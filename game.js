@@ -145,8 +145,9 @@ function desenharJogador() {
 
 function mostrarPontuacao() {
   fill(255);
-  textSize(24);
-  text(`Pontuação: ${pontuacao}`, 10, 30);
+  textSize(24); // Tamanho da fonte
+  textAlign(LEFT, TOP); // Alinha o texto no canto superior esquerdo
+  text(`Pontuação: ${pontuacao}`, 10, 10); // Desenha a pontuação no canto superior esquerdo
 }
 
 function verificarFimDeJogo() {
@@ -157,7 +158,8 @@ function verificarFimDeJogo() {
 }
 
 function exibirTelaGameOver() {
-  fill(255);
+  fill(255, 0, 0);
+  stroke(255, 0, 0);
   textSize(30);
   textAlign(CENTER, CENTER);
   text("Game Over!", width / 2, height / 2 - 20);
