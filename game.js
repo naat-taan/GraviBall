@@ -39,7 +39,7 @@ function atualizarCena() {
   atualizarPosicaoJogador();
   atualizarPlataformas();
   verificarColisoes();
-}
+  }
 
 function processarMovimentoJogador() {
   const velocidadeHorizontal = 3.5;
@@ -68,7 +68,6 @@ function criarPlataforma(yPos) {
 function atualizarPlataformas() {
   if (plataformas[plataformas.length - 1].y < height - ESPACAMENTO_PLATAFORMAS) {
     criarPlataforma(height);
-    pontuacao++;
   }
 
   plataformas = plataformas.filter(plataforma => {
@@ -77,19 +76,41 @@ function atualizarPlataformas() {
   });
 }
 
+function jogadorPassouPeloBuraco(plataforma) {
+  const baseJogador = jogador.pos.y + jogador.raio;
+
+  // Verifica se o jogador passou pelo buraco da plataforma
+  if (
+    baseJogador > plataforma.y + plataforma.altura && // O jogador está abaixo da plataforma
+    jogador.pos.x > plataforma.posicaoBuraco && // O jogador está dentro do buraco (limite esquerdo)
+    jogador.pos.x < plataforma.posicaoBuraco + 40 // O jogador está dentro do buraco (limite direito)
+  ) {
+    return true; // O jogador passou pelo buraco
+  }
+
+  return false; // O jogador não passou pelo buraco
+}
+
 function verificarColisoes() {
   jogador.estaNoChao = false;
- 
+
   for (let plataforma of plataformas) {
     const limiteSuperior = plataforma.y;
     const limiteInferior = plataforma.y + plataforma.altura;
     const baseJogador = jogador.pos.y + jogador.raio;
-   
+
+    // Verifica se o jogador está colidindo com a plataforma
     if (baseJogador > limiteSuperior && baseJogador < limiteInferior) {
       if (jogador.pos.x < plataforma.posicaoBuraco || jogador.pos.x > plataforma.posicaoBuraco + 40) {
         jogador.estaNoChao = true;
         jogador.pos.y = plataforma.y - jogador.raio - velocidadeJogo;
       }
+    }
+
+    // Verifica se o jogador passou pelo buraco e incrementa a pontuação
+    if (jogadorPassouPeloBuraco(plataforma) && !plataforma.pontoContado) {
+      pontuacao++; // Incrementa a pontuação
+      plataforma.pontoContado = true; // Marca o ponto como contado
     }
   }
 }
@@ -104,8 +125,8 @@ function desenharPlataformas() {
   for (let plataforma of plataformas) {
     fill(40, 130, 80);
     rect(0, plataforma.y, width, plataforma.altura);
-   
-    stroke(135, 210, 240)
+
+    stroke(135, 210, 240);
     fill(135, 210, 240);
     rect(plataforma.posicaoBuraco, plataforma.y, 40, plataforma.altura);
   }
