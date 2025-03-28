@@ -91,6 +91,24 @@ function jogadorPassouPeloBuraco(plataforma) {
   return false; // O jogador não passou pelo buraco
 }
 
+let coresPlataformas = [
+  [40, 130, 80], // Verde
+  [255, 165, 0], // Laranja
+  [0, 0, 255],   // Azul
+  [128, 0, 128], // Roxo
+  [255, 255, 0]  // Amarelo
+];
+let corAtualPlataformas = [40, 130, 80]; // Cor inicial das plataformas
+let corJogador = [0, 0, 0]; // Cor do jogador (preto)
+
+function mudarCorPlataformas() {
+  let novaCor;
+  do {
+    novaCor = random(coresPlataformas); // Escolhe uma cor aleatória
+  } while (novaCor[0] === corJogador[0] && novaCor[1] === corJogador[1] && novaCor[2] === corJogador[2]); // Garante que não seja igual à cor do jogador
+  corAtualPlataformas = novaCor; // Atualiza a cor das plataformas
+}
+
 function verificarColisoes() {
   jogador.estaNoChao = false;
 
@@ -112,10 +130,10 @@ function verificarColisoes() {
       pontuacao++; // Incrementa a pontuação
       plataforma.pontoContado = true; // Marca o ponto como contado
 
-      // Aumenta a velocidade das plataformas a cada 10 pontos
+      // Aumenta a velocidade das plataformas e muda a cor a cada 10 pontos
       if (pontuacao > 0 && pontuacao % 10 === 0) {
-        velocidadeJogo += 0.1; // Incrementa a velocidade
-        jogador.vel += 0.05
+        velocidadeJogo += 0.5; // Incrementa a velocidade
+        mudarCorPlataformas(); // Muda a cor das plataformas
       }
     }
   }
@@ -129,11 +147,11 @@ function desenharCena() {
 
 function desenharPlataformas() {
   for (let plataforma of plataformas) {
-    fill(40, 130, 80);
+    fill(corAtualPlataformas); // Usa a cor atual das plataformas
     rect(0, plataforma.y, width, plataforma.altura);
 
     stroke(135, 210, 240);
-    fill(135, 210, 240);
+    fill(135, 210, 240); // Cor do buraco
     rect(plataforma.posicaoBuraco, plataforma.y, 40, plataforma.altura);
   }
 }
@@ -165,8 +183,8 @@ function exibirTelaGameOver() {
   rect(width / 2, height / 2, 300, 150); // Desenha o retângulo no centro do canvas
 
   // Texto de "Game Over"
-  fill(255, 0, 0); // Cor do texto (vermelho)
-  stroke(255, 0, 0); // Borda do texto (vermelho)
+  fill(255, 0, 100); // Cor do texto (vermelho)
+  stroke(255, 255, 255, 30); // Borda do texto (vermelho)
   textSize(30);
   textAlign(CENTER, CENTER);
   text("Game Over!", width / 2, height / 2 - 30);
