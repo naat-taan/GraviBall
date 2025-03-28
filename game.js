@@ -158,14 +158,26 @@ function verificarFimDeJogo() {
 }
 
 function exibirTelaGameOver() {
-  fill(255, 0, 0);
-  stroke(255, 0, 0);
+  // Fundo semitransparente para o texto
+  fill(0, 0, 0, 150); // Cor preta com transparência
+  noStroke(); // Remove a borda do retângulo
+  rectMode(CENTER); // Define o modo de desenho do retângulo como centralizado
+  rect(width / 2, height / 2, 300, 150); // Desenha o retângulo no centro do canvas
+
+  // Texto de "Game Over"
+  fill(255, 0, 0); // Cor do texto (vermelho)
+  stroke(255, 0, 0); // Borda do texto (vermelho)
   textSize(30);
   textAlign(CENTER, CENTER);
-  text("Game Over!", width / 2, height / 2 - 20);
-  text(`Pontuação: ${pontuacao}`, width / 2, height / 2 + 20);
+  text("Game Over!", width / 2, height / 2 - 30);
+
+  // Texto da pontuação
+  textSize(24);
+  text(`Pontuação: ${pontuacao}`, width / 2, height / 2);
+
+  // Texto de instrução para reiniciar
   textSize(18);
-  text("Clique para recomeçar", width / 2, height / 2 + 50);
+  text("Clique para recomeçar", width / 2, height / 2 + 40);
 }
 
 
