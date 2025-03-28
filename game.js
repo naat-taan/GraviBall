@@ -111,6 +111,12 @@ function verificarColisoes() {
     if (jogadorPassouPeloBuraco(plataforma) && !plataforma.pontoContado) {
       pontuacao++; // Incrementa a pontuação
       plataforma.pontoContado = true; // Marca o ponto como contado
+
+      // Aumenta a velocidade das plataformas a cada 10 pontos
+      if (pontuacao > 0 && pontuacao % 10 === 0) {
+        velocidadeJogo += 0.1; // Incrementa a velocidade
+        jogador.vel += 0.05
+      }
     }
   }
 }
